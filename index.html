@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bridget Tsagli — Client Service & Operations</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0e0c0a;
+    --ink-light: #2c2820;
+    --cream: #f5f0e8;
+    --cream-mid: #e8e0d0;
+    --gold: #b8923a;
+    --gold-light: #d4a84b;
+    --gold-pale: #f0e4c4;
+    --muted: #7a7060;
+    --white: #fdfaf4;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--ink);
+    color: var(--cream);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(14,12,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(184,146,58,0.15);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--cream-mid);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,146,58,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 1rem;
+    max-width: 800px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 520px;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 0.85rem 2.2rem;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .btn-outline {
+    display: inline-block;
+    padding: 0.85rem 2.2rem;
+    border: 1px solid rgba(184,146,58,0.4);
+    color: var(--gold);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--gold);
+    background: rgba(184,146,58,0.06);
+  }
+
+  .hero-stats {
+    position: absolute;
+    right: 4rem;
+    bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: right;
+  }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 4rem;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--white);
+    margin-bottom: 3rem;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, rgba(184,146,58,0.3), transparent);
+    margin: 0;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    font-size: 1rem;
+    color: var(--cream-mid);
+    line-height: 1.9;
+    font-weight: 300;
+    margin-bottom: 1.2rem;
+  }
+
+  .about-text p strong {
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+
+  .about-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .detail-item {
+    padding: 1.5rem;
+    border: 1px solid rgba(184,146,58,0.15);
+    border-left: 3px solid var(--gold);
+  }
+
+  .detail-item-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .detail-item-value {
+    font-size: 0.95rem;
+    color: var(--cream);
+    font-weight: 400;
+  }
+
+  /* COMPETENCIES */
+  .competencies-bg {
+    background: #131109;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5px;
+    background: rgba(184,146,58,0.12);
+    border: 1px solid rgba(184,146,58,0.12);
+    margin-top: 3rem;
+  }
+
+  .skill-card {
+    background: #131109;
+    padding: 2rem;
+    transition: background 0.2s;
+  }
+
+  .skill-card:hover { background: #1a1710; }
+
+  .skill-icon {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .skill-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.6rem;
+  }
+
+  .skill-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* EXPERIENCE */
+  .experience-timeline {
+    margin-top: 3rem;
+    position: relative;
+  }
+
+  .experience-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), rgba(184,146,58,0.1));
+  }
+
+  .exp-item {
+    padding-left: 2.5rem;
+    padding-bottom: 3.5rem;
+    position: relative;
+  }
+
+  .exp-item::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 8px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .exp-role {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .exp-date {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    padding: 0.25rem 0.75rem;
+    border: 1px solid rgba(184,146,58,0.3);
+    white-space: nowrap;
+  }
+
+  .exp-company {
+    font-size: 0.82rem;
+    color: var(--gold-light);
+    margin-bottom: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  .exp-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .exp-bullets li {
+    font-size: 0.87rem;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.7;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .exp-bullets li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 0.7rem;
+    top: 3px;
+  }
+
+  /* CASE STUDIES */
+  .cases-bg {
+    background: #131109;
+  }
+
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2px;
+    background: rgba(184,146,58,0.1);
+    margin-top: 3rem;
+  }
+
+  .case-card {
+    background: #131109;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .case-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
+  }
+
+  .case-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: rgba(184,146,58,0.12);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .case-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+  }
+
+  .case-block {
+    margin-bottom: 1.2rem;
+  }
+
+  .case-block-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .case-block-text {
+    font-size: 0.84rem;
+    color: var(--cream-mid);
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  .case-outcome {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(184,146,58,0.07);
+    border-left: 2px solid var(--gold);
+    font-size: 0.84rem;
+    color: var(--cream);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  /* TOOLS */
+  .tools-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+  }
+
+  .tool-tag {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid rgba(184,146,58,0.25);
+    font-size: 0.78rem;
+    color: var(--cream-mid);
+    letter-spacing: 0.05em;
+    font-weight: 400;
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .tool-tag:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: rgba(184,146,58,0.05);
+  }
+
+  /* CERTIFICATIONS */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .cert-card {
+    padding: 1.8rem;
+    border: 1px solid rgba(184,146,58,0.2);
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+
+  .cert-card:hover { border-color: rgba(184,146,58,0.5); }
+
+  .cert-badge {
+    width: 42px;
+    height: 42px;
+    background: rgba(184,146,58,0.1);
+    border: 1px solid rgba(184,146,58,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .cert-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+
+  .cert-org {
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.07em;
+  }
+
+  /* CONTACT */
+  .contact-bg {
+    background: #0a0905;
+  }
+
+  .contact-inner {
+    max-width: 680px;
+  }
+
+  .contact-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream-mid);
+    line-height: 1.4;
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    padding: 1rem 1.5rem;
+    border: 1px solid rgba(184,146,58,0.15);
+    transition: all 0.2s;
+    group: true;
+  }
+
+  .contact-link:hover {
+    border-color: rgba(184,146,58,0.4);
+    background: rgba(184,146,58,0.04);
+    transform: translateX(4px);
+  }
+
+  .contact-link-icon {
+    font-size: 1rem;
+    color: var(--gold);
+    width: 20px;
+    text-align: center;
+  }
+
+  .contact-link-text {
+    font-size: 0.88rem;
+    color: var(--cream-mid);
+    font-weight: 400;
+  }
+
+  .contact-link-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-left: auto;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(184,146,58,0.1);
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* ANIMATIONS */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .nav-links li:nth-child(n+3) { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 6rem 1.5rem 8rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-stats { position: static; flex-direction: row; flex-wrap: wrap; gap: 2rem; margin-top: 3rem; text-align: left; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Bridget Tsagli</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#casestudies">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Available for Remote &amp; Onsite Roles</div>
+  <h1>Client Service &amp;<br><em>Operations</em><br>Professional</h1>
+  <p class="hero-sub">
+    I keep operations running, clients heard, and nothing falling through the cracks — in fast-paced, multi-channel environments where accountability isn't optional.
+  </p>
+  <div class="hero-cta">
+    <a href="#casestudies" class="btn-primary">View My Work</a>
+    <a href="#contact" class="btn-outline">Get In Touch</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">20+</div>
+      <div class="stat-label">Vendors Onboarded</div>
+    </div>
+    <div>
+      <div class="stat-num">50</div>
+      <div class="stat-label">Daily Outreach Calls</div>
+    </div>
+    <div>
+      <div class="stat-num">10</div>
+      <div class="stat-label">Full-Cycle Orders Managed Daily</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About</div>
+  <div class="about-grid">
+    <div class="about-text fade-in">
+      <p>
+        I'm a <strong>Client Service and Operations professional</strong> based in Accra, Ghana, with hands-on experience managing high-volume, multi-channel client interactions in digital environments where nothing can be missed.
+      </p>
+      <p>
+        My work at ShaQ App taught me that <strong>operational discipline is what separates good service from great service</strong> — tracking every case, following through on every commitment, and escalating with full context when needed.
+      </p>
+      <p>
+        I bring a structured, detail-oriented approach to everything from vendor onboarding to client communications, operational reporting, and process improvement. I don't just manage tasks — <strong>I build the systems that make teams run without friction.</strong>
+      </p>
+    </div>
+    <div class="about-details fade-in">
+      <div class="detail-item">
+        <div class="detail-item-label">Location</div>
+        <div class="detail-item-value">Accra, Ghana &nbsp;·&nbsp; Open to Remote Worldwide</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-item-label">Specialisation</div>
+        <div class="detail-item-value">Client Service · Operations Coordination · Virtual Assistance</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-item-label">Education</div>
+        <div class="detail-item-value">BSc. Natural Resource Management<br>KNUST · 2021 – 2024</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-item-label">Contact</div>
+        <div class="detail-item-value">bridget.mawufemorklenam@gmail.com<br>055 873 1552</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COMPETENCIES -->
+<section class="competencies-bg">
+  <div class="section-label">What I Do</div>
+  <div class="section-title fade-in">Core Competencies</div>
+  <div class="skills-grid">
+    <div class="skill-card fade-in">
+      <span class="skill-icon">◈</span>
+      <div class="skill-title">Client Communication</div>
+      <div class="skill-desc">Multi-channel support across phone, WhatsApp, email, and in-app messaging. Every client interaction handled with professionalism and full follow-through.</div>
+    </div>
+    <div class="skill-card fade-in">
+      <span class="skill-icon">◈</span>
+      <div class="skill-title">Operations Coordination</div>
+      <div class="skill-desc">Workflow management, task tracking, SLA adherence, and cross-functional collaboration. Nothing falls through the cracks on my watch.</div>
+    </div>
+    <div class="skill-card fade-in">
+      <span class="skill-icon">◈</span>
+      <div class="skill-title">Project &amp; Timeline Management</div>
+      <div class="skill-desc">Deadline accountability, priority management, and structured execution across multiple workstreams — without constant supervision.</div>
+    </div>
+    <div class="skill-card fade-in">
+      <span class="skill-icon">◈</span>
+      <div class="skill-title">Vendor &amp; Stakeholder Management</div>
+      <div class="skill-desc">End-to-end vendor onboarding, documentation verification, and relationship management that keeps partners aligned and activated.</div>
+    </div>
+    <div class="skill-card fade-in">
+      <span class="skill-icon">◈</span>
+      <div class="skill-title">Reporting &amp; Documentation</div>
+      <div class="skill-desc">Operational reports, performance summaries, and feedback analysis that give leadership clear, actionable visibility.</div>
+    </div>
+    <div class="skill-card fade-in">
+      <span class="skill-icon">◈</span>
+      <div class="skill-title">Virtual Assistance</div>
+      <div class="skill-desc">ALX-certified. Calendar management, correspondence, database management, and administrative support delivered remotely with full accountability.</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Experience</div>
+  <div class="section-title fade-in">Professional History</div>
+  <div class="experience-timeline">
+
+    <div class="exp-item fade-in">
+      <div class="exp-header">
+        <div class="exp-role">Customer &amp; Operations Support Specialist</div>
+        <div class="exp-date">Oct 2024 – Aug 2025</div>
+      </div>
+      <div class="exp-company">ShaQ App · Accra, Ghana</div>
+      <ul class="exp-bullets">
+        <li>Managed up to 10 full-cycle customer orders daily — from placement through to delivery confirmation — ensuring accurate, on-time fulfilment while simultaneously running operational tasks.</li>
+        <li>Conducted 25–50 outbound calls per day to prospect and convert businesses onto the platform, directly contributing to 20+ vendor sign-ups during tenure.</li>
+        <li>Managed backend system operations including account monitoring, product upload compliance checks, and re-engagement outreach to inactive accounts.</li>
+        <li>Oversaw financial payment tracking — verifying transactions, following up on outstanding payments, and ensuring all records were accurately reconciled.</li>
+        <li>Sourced service times and fulfilment solutions for customers with specific requirements, coordinating logistics within platform constraints.</li>
+        <li>Drove end-to-end vendor onboarding for 20+ partners — guiding each through documentation, platform requirements, and full activation.</li>
+        <li>Designed and administered business feedback surveys; compiled results into structured operational reports for leadership review.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item fade-in">
+      <div class="exp-header">
+        <div class="exp-role">Administrative Assistant (Contract)</div>
+        <div class="exp-date">Dec 2023</div>
+      </div>
+      <div class="exp-company">Political Campaign Project · Accra, Ghana</div>
+      <ul class="exp-bullets">
+        <li>Restructured and managed a database of 1,000+ stakeholder records, ensuring all contact information and communication timelines were accurate and actionable.</li>
+        <li>Supported event and meeting coordination while maintaining discretion with sensitive data in a high-stakes, time-pressured environment.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item fade-in">
+      <div class="exp-header">
+        <div class="exp-role">Administrative Operations Intern</div>
+        <div class="exp-date">Oct – Dec 2023</div>
+      </div>
+      <div class="exp-company">Forest Services Division · Accra, Ghana</div>
+      <ul class="exp-bullets">
+        <li>Coordinated documentation, scheduling, and internal reporting workflows, ensuring key deadlines were consistently met.</li>
+        <li>Prepared structured performance summaries and operational reports that supported senior team decision-making.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item fade-in">
+      <div class="exp-header">
+        <div class="exp-role">Administrative Operations Intern</div>
+        <div class="exp-date">Oct – Nov 2022</div>
+      </div>
+      <div class="exp-company">Jallin's Global Business · Accra, Ghana</div>
+      <ul class="exp-bullets">
+        <li>Maintained financial and shipment records, tracked payment cycles, and followed up on outstanding balances.</li>
+        <li>Coordinated internal documentation and correspondence in a fast-paced, multi-priority business environment.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CASE STUDIES -->
+<section id="casestudies" class="cases-bg">
+  <div class="section-label">Selected Work</div>
+  <div class="section-title fade-in">Case Studies</div>
+  <div class="cases-grid">
+
+    <div class="case-card fade-in">
+      <div class="case-number">01</div>
+      <div class="case-title">Full-Cycle Order Management</div>
+      <div class="case-block">
+        <div class="case-block-label">Situation</div>
+        <div class="case-block-text">ShaQ App required someone to manage complete customer orders daily — from initial placement through delivery — while simultaneously handling operational responsibilities across the business.</div>
+      </div>
+      <div class="case-block">
+        <div class="case-block-label">Action</div>
+        <div class="case-block-text">I managed up to 10 full customer order cycles daily, tracking each order from start to confirmed delivery, coordinating logistics, sourcing fulfilment times where needed, and resolving any issues mid-process without dropping other operational tasks.</div>
+      </div>
+      <div class="case-outcome">
+        Result: Consistent on-time delivery across all managed orders with no missed fulfilments. Customers received items accurately and within expected timeframes, even during high-volume periods.
+      </div>
+    </div>
+
+    <div class="case-card fade-in">
+      <div class="case-number">02</div>
+      <div class="case-title">Vendor Outreach &amp; Onboarding</div>
+      <div class="case-block">
+        <div class="case-block-label">Situation</div>
+        <div class="case-block-text">The platform needed to grow its vendor base. This required both high-volume outbound prospecting to sign up new businesses and a structured onboarding process to ensure they became active, product-uploading partners.</div>
+      </div>
+      <div class="case-block">
+        <div class="case-block-label">Action</div>
+        <div class="case-block-text">I made 25–50 outbound calls daily to prospect businesses, handled objections, and converted interest into sign-ups. I then personally managed onboarding for each new vendor — verifying documentation, guiding them through platform requirements, and following up on inactive accounts that had signed up but not yet uploaded products.</div>
+      </div>
+      <div class="case-outcome">
+        Result: 20+ vendors successfully onboarded and activated. Re-engagement outreach to dormant accounts improved product upload rates, directly contributing to platform growth.
+      </div>
+    </div>
+
+    <div class="case-card fade-in">
+      <div class="case-number">03</div>
+      <div class="case-title">Financial Tracking &amp; Operational Control</div>
+      <div class="case-block">
+        <div class="case-block-label">Situation</div>
+        <div class="case-block-text">Beyond client-facing work, the role required managing backend systems, financial payment records, and ensuring full operational accountability — all running simultaneously with customer and vendor responsibilities.</div>
+      </div>
+      <div class="case-block">
+        <div class="case-block-label">Action</div>
+        <div class="case-block-text">I tracked all financial transactions, followed up on outstanding payments, and maintained accurate records across the platform. I simultaneously managed backend system operations — monitoring accounts, checking compliance, and flagging issues for resolution before they escalated.</div>
+      </div>
+      <div class="case-outcome">
+        Result: Zero financial discrepancies under my watch. Backend systems maintained at full compliance with proactive issue identification that prevented operational breakdowns.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section>
+  <div class="section-label">Tools &amp; Systems</div>
+  <div class="section-title fade-in">What I Work With</div>
+  <div class="tools-grid">
+    <span class="tool-tag">CRM Platforms</span>
+    <span class="tool-tag">Microsoft Excel</span>
+    <span class="tool-tag">Microsoft Word</span>
+    <span class="tool-tag">Google Workspace</span>
+    <span class="tool-tag">WhatsApp Business</span>
+    <span class="tool-tag">Email Management</span>
+    <span class="tool-tag">Operational Reporting</span>
+    <span class="tool-tag">Database Management</span>
+    <span class="tool-tag">Survey Design</span>
+    <span class="tool-tag">Stakeholder Communication</span>
+    <span class="tool-tag">Workflow Documentation</span>
+    <span class="tool-tag">Calendar Management</span>
+  </div>
+
+  <div style="margin-top: 4rem;">
+    <div class="section-label">Credentials</div>
+    <div class="certs-grid" style="margin-top: 1.5rem;">
+      <div class="cert-card fade-in">
+        <div class="cert-badge">✦</div>
+        <div>
+          <div class="cert-name">Virtual Assistant Certification</div>
+          <div class="cert-org">ALX Africa · 2024</div>
+        </div>
+      </div>
+      <div class="cert-card fade-in">
+        <div class="cert-badge">✦</div>
+        <div>
+          <div class="cert-name">AI Career Essentials</div>
+          <div class="cert-org">ALX Africa · 2024</div>
+        </div>
+      </div>
+      <div class="cert-card fade-in">
+        <div class="cert-badge">✦</div>
+        <div>
+          <div class="cert-name">BSc. Natural Resource Management</div>
+          <div class="cert-org">KNUST · 2021 – 2024</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-bg">
+  <div class="section-label">Contact</div>
+  <div class="contact-inner">
+    <p class="contact-intro fade-in">"Let's talk about how I can bring structure, discipline, and accountability to your team."</p>
+    <div class="contact-links">
+      <a href="mailto:bridget.mawufemorklenam@gmail.com" class="contact-link">
+        <span class="contact-link-icon">✉</span>
+        <span class="contact-link-text">bridget.mawufemorklenam@gmail.com</span>
+        <span class="contact-link-label">Email</span>
+      </a>
+      <a href="tel:+233558731552" class="contact-link">
+        <span class="contact-link-icon">☏</span>
+        <span class="contact-link-text">055 873 1552</span>
+        <span class="contact-link-label">Phone</span>
+      </a>
+      <a href="https://linkedin.com/in/bridget-mawufemor-klenam-tsagli" target="_blank" class="contact-link">
+        <span class="contact-link-icon">in</span>
+        <span class="contact-link-text">linkedin.com/in/bridget-mawufemor-klenam-tsagli</span>
+        <span class="contact-link-label">LinkedIn</span>
+      </a>
+    </div>
+    <div style="margin-top: 2.5rem;">
+      <a href="mailto:bridget.mawufemorklenam@gmail.com" class="btn-primary">Hire Me</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Bridget Mawufemor Klenam Tsagli</span>
+  <span>Accra, Ghana &nbsp;·&nbsp; Open to Remote Worldwide</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
